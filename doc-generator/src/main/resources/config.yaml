@@ -13,13 +13,13 @@ includesPath: "../docs/common"
 includesImagesPath: "../docs/assets/images/common"
 
 # Relative path to generated doc content. This is the directory structure for docs-ei repository
-readmeOutputPath: "en/micro-integrator/docs/references/mule-migration/migration-examples"
-readmeImagesOutputPath: "en/micro-integrator/docs/assets/img/migration-examples"
-includesImagesOutputPath: "en/micro-integrator/docs/assets/img/migration-examples/common"
+readmeOutputPath: "examples"
+readmeImagesOutputPath: "resources/images"
+includesImagesOutputPath: "resources/images"
 zipOutputPath: "en/micro-integrator/docs/assets/zip/mule-migration"
 
 # For images added with html <img src="..." /> tag use the absolute path of the rendered website
-htmlReadmeImagesAbsolutePath: "/assets/img/migration-examples"
-htmlIncludesImagesAbsolutePath: "/assets/img/migration-examples/common"
+htmlReadmeImagesAbsolutePath: "resources/images"
+htmlIncludesImagesAbsolutePath: "resources/images"
 # Used for html download element zip location
 htmlZipAbsolutePath: "/assets/zip/mule-migration"

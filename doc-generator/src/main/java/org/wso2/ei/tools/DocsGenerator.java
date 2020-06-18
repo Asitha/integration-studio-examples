@@ -151,18 +151,23 @@ public class DocsGenerator {
 
     private static boolean processSourceDirectory(DirRegistry dirRegistry, List<File> files) {
         boolean projectFileFound = false;
-        Path relativeImageOutDirPath = dirRegistry.getReadmeOutDir().relativize(dirRegistry.getReadmeImagesOutDir());
         for (File file: files) {
             if (file.isFile() && (config.getProjectFileName().equals(file.getName()))) {
                 projectFileFound = true;
                 File readmeFile = Paths.get(file.getParent(), config.getReadmeFileName()).toFile();
                 try {
                     if (readmeFile.exists()) {
+                        Path finalReadmeOutDir = dirRegistry.getReadmeOutDir().resolve(
+                                Paths.get(file.getParentFile().getName()));
+                        Path relativeImageOutDirPath =
+                                finalReadmeOutDir.relativize(dirRegistry.getReadmeImagesOutDir());
+                        Path relativehtmlImageOutDirPath =
+                                finalReadmeOutDir.relativize(dirRegistry.getReadmeImagesOutDir());
                         processReadmeFile(readmeFile, relativeImageOutDirPath, dirRegistry.getHtmlZipAbsolutePath(),
-                                          dirRegistry.getHtmlImageAbsolutePath(), true);
-                        Files.copy(readmeFile.toPath(),
-                                   dirRegistry.getReadmeOutDir().resolve(
-                                           file.getParentFile().getName() + MARKDOWN_FILE_EXT));
+                                          relativehtmlImageOutDirPath, false);
+                        Util.mkdirs(finalReadmeOutDir);
+                        Path outPath = finalReadmeOutDir.resolve(readmeFile.getName());
+                        Files.copy(readmeFile.toPath(), outPath);
                     } else {
                         throw new ServiceException(config.getReadmeFileName()
                                                    + " Not found. Path: " + file.toPath());
@@ -185,7 +190,8 @@ public class DocsGenerator {
 
     private static boolean processIncludesDirectory(DirRegistry dirRegistry, List<File> files) {
         boolean directoriesFound = false;
-        Path relativeImageOutDir = dirRegistry.getReadmeOutDir().relativize(dirRegistry.getIncludesImagesOutDir());
+        Path relativeImageOutDir = dirRegistry.getReadmeOutDir().resolve("sampleDir")
+                                              .relativize(dirRegistry.getIncludesImagesOutDir());
         for (File file: files) {
             if (file.isFile() && file.getName().endsWith(MARKDOWN_FILE_EXT)) {
                 processReadmeFile(file, relativeImageOutDir, null,
